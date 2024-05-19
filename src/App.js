@@ -1,28 +1,25 @@
-import Header from "./assets/js/views/Header";
+import Header from "./assets/js/components/views/Header";
 
-import React, { useState } from "react";
-import { GetQuestionDATA } from "./assets/js/data/GetQuestionDATA";
+import { useState, useEffect } from "react";
+
+import { GetQuestionDATA } from "./assets/js/components/data/GetQuestionDATA";
+
+import Main from "./assets/js/components/views/Main";
+
+import { useTrivia } from "./assets/js/components/hooks/useTrivia";
 
 export default function App() {
-  const [apiData, setAPIData] = useState({});
-  console.log(apiData);
-  const [startQuiz, setStartQuiz] = useState(false);
-
-  function handleStartQuiz() {
-    setStartQuiz(!startQuiz);
-  }
-
+  // setting apiParameters for quiz
+  const [params, setParams] = useState({});
+  // transition from question selection to start of quiz
+  const [pressStart, setPressStart] = useState(false);
   return (
     <div className="App">
       <Header />
       <div>
-        {!startQuiz ? (
-          <button className="start-quiz-button" onClick={handleStartQuiz}>
-            Start Quiz
-          </button>
-        ) : (
-          <GetQuestionDATA setAPIData={setAPIData} />
-        )}
+        <GetQuestionDATA params={setParams} />
+
+        <Main params={params} />
       </div>
     </div>
   );

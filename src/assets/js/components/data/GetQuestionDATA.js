@@ -1,25 +1,26 @@
-import { useReducer } from "react";
+import { useReducer, useState, useEffect } from "react";
 import React from "react";
 import Select from "react-select";
 
-export function GetQuestionDATA({ setAPIData }) {
+export function GetQuestionDATA({ params }) {
+  const [apiParams, setAPIParams] = useState({});
   // USE REDUCER to get our various Data from state shown on screen.
   // set initial state
   const initialState = {
-    count: 10,
+    amount: 10,
     category: "",
     difficulty: "",
-    type: "",
+    type: "multiple",
   };
 
-  // set the count, with reducer
+  // set the Amount, with reducer
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function reducer(state, action) {
     // we don't tend to use ifs or terniary in reducers instead we look at using the switch keyword, which takes our action type and creates a case for each type.
     switch (action.type) {
-      case "setCount":
-        return { ...state, count: action.payload };
+      case "setAmount":
+        return { ...state, amount: action.payload };
       case "setCategory":
         return { ...state, category: action.payload };
       case "setDifficulty":
@@ -27,15 +28,17 @@ export function GetQuestionDATA({ setAPIData }) {
       case "setType":
         return { ...state, type: action.payload };
       case "start":
-        return setAPIData(state);
+        return setAPIParams(state);
+      case "reset":
+        return initialState;
 
       default:
         throw new Error("Unknown action");
     }
   }
 
-  const defineCount = function (e) {
-    dispatch({ type: "setCount", payload: Number(e.target.value) });
+  const defineAmount = function (e) {
+    dispatch({ type: "setAmount", payload: Number(e.target.value) });
   };
 
   const defineCategory = function (e) {
@@ -54,11 +57,29 @@ export function GetQuestionDATA({ setAPIData }) {
     dispatch({ type: "start" });
   };
 
+  const reset = function () {
+    dispatch({ type: "reset" });
+  };
+
+  // TODO
+
+  // reset fields
+
+  // reset initial state
+
+  // change default select field to "random"
+
+  // use an effect to send state to app
+  useEffect(() => {
+    params(apiParams);
+  });
+
   // set state based on choices (dispatch + action)
   // Buncle the state into an object (reducer)
   //----- jsx options -----//
   // category
   const category_options = [
+    { value: "", label: "Random" },
     { value: "9", label: "General Knowledge" },
     { value: "10", label: "Entertainment: Books" },
     { value: "11", label: "Entertainment: Film" },
@@ -96,30 +117,30 @@ export function GetQuestionDATA({ setAPIData }) {
   // encoding (hidden)
   return (
     <div className="quiz-selection">
-      <p>Number Of Questions</p>
+      <p>Number Of Questions (Default: 10)</p>
       <div className="quiz-buttons">
         <span>
-          <button value="10" onClick={defineCount}>
+          <button value="10" onClick={defineAmount}>
             10
           </button>
         </span>
         <span>
-          <button value="20" onClick={defineCount}>
+          <button value="20" onClick={defineAmount}>
             20
           </button>
         </span>
         <span>
-          <button value="30" onClick={defineCount}>
+          <button value="30" onClick={defineAmount}>
             30
           </button>
         </span>
         <span>
-          <button value="40" onClick={defineCount}>
+          <button value="40" onClick={defineAmount}>
             40
           </button>
         </span>
         <span>
-          <button value="50" onClick={defineCount}>
+          <button value="50" onClick={defineAmount}>
             50
           </button>
         </span>
@@ -129,8 +150,8 @@ export function GetQuestionDATA({ setAPIData }) {
         <Select onChange={defineCategory} options={category_options} />
         <p className="cat-header">Difficulty</p>
         <Select onChange={defineDifficulty} options={difficulty_options} />
-        <p className="cat-header">Type</p>
-        <Select onChange={defineType} options={type_options} />
+        {/* <p className="cat-header">Type</p>
+        <Select onChange={defineType} options={type_options} /> */}
       </div>
       <div>
         <button className="quiz-buttons" onClick={start}>
