@@ -1,5 +1,5 @@
 import Header from "./assets/js/views/Header";
-import Main from "./assets/js/views/Main";
+
 import React, { useState } from "react";
 import { GetQuestionDATA } from "./assets/js/data/GetQuestionDATA";
 

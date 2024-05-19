@@ -34,14 +34,6 @@ export function GetQuestionDATA({ setAPIData }) {
     }
   }
 
-  const dec = function () {
-    dispatch({ type: "dec" });
-  };
-
-  const inc = function () {
-    dispatch({ type: "inc" });
-  };
-
   const defineCount = function (e) {
     dispatch({ type: "setCount", payload: Number(e.target.value) });
   };
