@@ -1,12 +1,7 @@
-import { useTrivia } from "../hooks/useTrivia";
-
-export default function Main({ params }) {
-  console.log(params);
-  // const { questionData, isLoading, error, Key } = useTrivia(params);
-
+export function Main(params, questionData) {
   return (
-    <main className="main">
-      <div></div>
-    </main>
+    <div>
+      <p>{console.log(questionData)}</p>
+    </div>
   );
 }
