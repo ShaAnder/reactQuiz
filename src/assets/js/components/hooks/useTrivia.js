@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
  * @returns the movie, isLoading, error state and the Key variable for use throughout the codebase
  * @author ShaAnder
  */
-export function useTrivia(query) {
+export function useTrivia(query, start) {
   // searched questionData state
   const [questionData, setQuestionData] = useState();
   // loading state for our loading message
@@ -17,13 +17,11 @@ export function useTrivia(query) {
   // Fetch our API data for the questionData
   useEffect(
     function () {
-      if (query === undefined) {
-        console.log("no query");
-      } else {
-        // using abort controller to clean up data fetching
-        const controller = new AbortController();
+      // using abort controller to clean up data fetching
+      const controller = new AbortController();
 
-        async function fetchQuestions() {
+      async function fetchQuestions() {
+        if (start) {
           // create a loading state
           try {
             // set loading state
@@ -43,7 +41,16 @@ export function useTrivia(query) {
             if (data.response === "False")
               throw new Error("Questions  Not Found");
             // set our state
-            setQuestionData(data.results);
+            setQuestionData((questions) =>
+              data.results.map((question) => {
+                return {
+                  question: question.question,
+                  correct: question.correct_answer,
+                  incorrect: question.incorrect_answers,
+                  points: 10,
+                };
+              })
+            );
 
             // set error to empty initially (cos no error)
             setError("");
@@ -57,14 +64,14 @@ export function useTrivia(query) {
             setIsLoading(false);
           }
         }
-
-        // fetch our questionData
-        fetchQuestions();
-        // return controller here
-        return function () {
-          controller.abort();
-        };
       }
+
+      // fetch our questionData
+      fetchQuestions();
+      // return controller here
+      return function () {
+        controller.abort();
+      };
     },
     // the effect is triggered when query is populated
     [query]

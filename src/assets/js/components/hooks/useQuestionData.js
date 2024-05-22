@@ -8,7 +8,7 @@ const initialreducerState = {
 };
 
 // Reducer get's defined outside of our component, then we pass it into the component
-function reducer(reducerState, action) {
+function reducer(reducerState = {}, action) {
   switch (action.type) {
     case "setAmount":
       return { ...reducerState, amount: action.payload };

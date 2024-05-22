@@ -1,7 +1,7 @@
-export function Main(questions) {
+export function Main(params) {
   return (
     <div>
-      <p>{console.log(questions)}</p>
+      <p>{console.log(params)}</p>
     </div>
   );
 }

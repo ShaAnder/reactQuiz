@@ -11,42 +11,20 @@ import { Main } from "./assets/js/components/views/Main";
 import { Header } from "./assets/js/components/views/Header";
 
 export default function App() {
-  // Params State
-  const [params, setParams] = useState();
-  // Question state
-  const [questions, setQuestions] = useState();
   // Start Game State
   const [start, setStart] = useState(false);
-
+  const [params, setParams] = useState([]);
   // destucture reducer hook here
   const { reducerState, actions } = useQuestionData();
   // destructure trivia hook here
-  const { questionData, isLoading, error } = useTrivia(params);
+  const { questionData, isLoading, error } = useTrivia(params, start);
 
   // set start handler
   function handleSetStart() {
+    setStart(!start);
     setParams(reducerState);
-    if (!questionData) {
-      return;
-    } else {
-      setQuestions((questions) =>
-        questionData.map((question) => {
-          return {
-            question: question.question,
-            correct: question.correct_answer,
-            incorrect: question.incorrect_answers,
-            points: 10,
-          };
-        })
-      );
-      setStart(!start);
-    }
   }
 
-  // getting question DATA
-  console.log(questionData);
-  // Becomes undefined here // need to spread data into objects
-  console.log(questions);
   return (
     <div>
       <Header />
@@ -59,7 +37,7 @@ export default function App() {
           handleSetStart={handleSetStart}
         />
       ) : (
-        <Main questions={questions} />
+        <Main questionData={questionData} />
       )}
     </div>
   );
