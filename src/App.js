@@ -5,8 +5,6 @@ import { useTrivia } from "./assets/js/components/hooks/useTrivia";
 
 import { GetQuestionData } from "./assets/js/components/data/GetQuestionData";
 
-import { Debug } from "./assets/js/components/helpers/Debug";
-
 import { Main } from "./assets/js/components/views/Main";
 import { Header } from "./assets/js/components/views/Header";
 
@@ -25,10 +23,17 @@ export default function App() {
     setParams(reducerState);
   }
 
+  let question = {
+    correct: "Blonde",
+    incorrect: ["Brunette", "Black", "Burgundy"],
+    points: 10,
+    question:
+      "What was the name of singer Frank Ocean&#039;s second studio album, which was released on August 20, 2016?",
+  };
+
   return (
     <div>
       <Header />
-      <Debug reducerState={reducerState} start={start} />
       {!start ? (
         <GetQuestionData
           actions={actions}

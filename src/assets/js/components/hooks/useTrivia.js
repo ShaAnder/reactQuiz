@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { shuffleARR } from "../helpers/shuffleArray";
 
 /**
  * useTrivia Hook for finding the trivia data
@@ -45,8 +46,11 @@ export function useTrivia(query, start) {
               data.results.map((question) => {
                 return {
                   question: question.question,
+                  answers: shuffleARR(
+                    question.incorrect_answers,
+                    question.correct_answer
+                  ),
                   correct: question.correct_answer,
-                  incorrect: question.incorrect_answers,
                   points: 10,
                 };
               })
