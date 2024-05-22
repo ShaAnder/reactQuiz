@@ -31,7 +31,7 @@ export function useTrivia(query) {
             setError("");
             // get our data
             const res = await fetch(
-              `https://opentdb.com/api.php?amount=${query.amount}&category=${query.category}&difficlty="${query.difficulty}&type=multiple`,
+              `https://opentdb.com/api.php?amount=${query.amount}&category=${query.category}&difficlty=${query.difficulty}&type=multiple`,
               // Connect abort conroller
               { signal: controller.signal }
             );
@@ -40,9 +40,11 @@ export function useTrivia(query) {
             if (!res.ok) throw new Error("Trivia Fetching Failed");
             // save our response
             const data = await res.json();
-            if (data.response === "False") throw new Error("Movie Not Found");
-            // set our movie state
+            if (data.response === "False")
+              throw new Error("Questions  Not Found");
+            // set our state
             setQuestionData(data.results);
+
             // set error to empty initially (cos no error)
             setError("");
           } catch (err) {

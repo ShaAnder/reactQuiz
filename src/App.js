@@ -26,8 +26,21 @@ export default function App() {
   // set start handler
   function handleSetStart() {
     setParams(reducerState);
-    setQuestions("test");
-    setStart(!start);
+    if (!questionData) {
+      return;
+    } else {
+      setQuestions((questions) =>
+        questionData.map((question) => {
+          return {
+            question: question.question,
+            correct: question.correct_answer,
+            incorrect: question.incorrect_answers,
+            points: 10,
+          };
+        })
+      );
+      setStart(!start);
+    }
   }
 
   // getting question DATA
@@ -46,7 +59,7 @@ export default function App() {
           handleSetStart={handleSetStart}
         />
       ) : (
-        <Main params={params} questionData={questionData} />
+        <Main questions={questions} />
       )}
     </div>
   );
