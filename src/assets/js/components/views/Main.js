@@ -1,7 +1,3 @@
-export function Main(params) {
-  return (
-    <div>
-      <p>{console.log(params)}</p>
-    </div>
-  );
+export function Main({ children }) {
+  return <div>{children}</div>;
 }

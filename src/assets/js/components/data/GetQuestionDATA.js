@@ -5,51 +5,74 @@ import Select from "react-select";
 import { difficulty_options } from "./options/difficulty_options";
 import { category_options } from "./options/category_options";
 
-export function GetQuestionData({ actions, handleSetStart }) {
-  // Recieve the actions as a prop, and then pass them onto our onclick / change handlers, this automatically updates the state, the start button will then reset the state as needed
+export function GetQuestionData({ questionActions, handleSetStart }) {
+  // Recieve the questionActions as a prop, and then pass them onto our onclick / change handlers, this automatically updates the state, the start button will then reset the state as needed
 
   return (
     <div className="quiz-selection">
       <p>Number Of Questions</p>
       <div className="quiz-buttons">
         <span>
-          <button value="10" onClick={actions.defineAmount}>
+          <button
+            className="btn number-btn"
+            value="10"
+            onClick={questionActions.defineAmount}
+          >
             10
           </button>
         </span>
         <span>
-          <button value="20" onClick={actions.defineAmount}>
+          <button
+            className="btn number-btn"
+            value="20"
+            onClick={questionActions.defineAmount}
+          >
             20
           </button>
         </span>
         <span>
-          <button value="30" onClick={actions.defineAmount}>
+          <button
+            className="btn number-btn"
+            value="30"
+            onClick={questionActions.defineAmount}
+          >
             30
           </button>
         </span>
         <span>
-          <button value="40" onClick={actions.defineAmount}>
+          <button
+            className="btn number-btn"
+            value="40"
+            onClick={questionActions.defineAmount}
+          >
             40
           </button>
         </span>
         <span>
-          <button value="50" onClick={(e) => actions.defineAmount(e)}>
+          <button
+            className="btn number-btn"
+            value="50"
+            onClick={(e) => questionActions.defineAmount(e)}
+          >
             50
           </button>
         </span>
       </div>
       <div className="select">
         <p className="cat-header">Category</p>
-        <Select onChange={actions.defineCategory} options={category_options} />
+        <Select
+          onChange={questionActions.defineCategory}
+          options={category_options}
+        />
         <p className="cat-header">Difficulty</p>
         <Select
-          onChange={actions.defineDifficulty}
+          onChange={questionActions.defineDifficulty}
           options={difficulty_options}
         />
       </div>
       <div>
-        <button className="quiz-buttons" onClick={() => handleSetStart()}>
-          Start
+        <button className="btn confirm-btn" onClick={() => handleSetStart()}>
+          Apply Settings
         </button>
       </div>
     </div>

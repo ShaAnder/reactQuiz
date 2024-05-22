@@ -7,15 +7,15 @@ import { shuffleARR } from "../helpers/shuffleArray";
  * @returns the movie, isLoading, error state and the Key variable for use throughout the codebase
  * @author ShaAnder
  */
-export function useTrivia(query, start) {
-  // searched questionData state
-  const [questionData, setQuestionData] = useState();
+export function useTrivia(query, start, setStatus) {
+  // searched questions state
+  const [questions, setQuestions] = useState();
   // loading state for our loading message
   const [isLoading, setIsLoading] = useState(false);
   // state for showing if we have an error
   const [error, setError] = useState("");
 
-  // Fetch our API data for the questionData
+  // Fetch our API data for the questions
   useEffect(
     function () {
       // using abort controller to clean up data fetching
@@ -25,12 +25,13 @@ export function useTrivia(query, start) {
         if (start) {
           // create a loading state
           try {
-            // set loading state
             setIsLoading(true);
+            setStatus("loading");
+            // set loading state
             setError("");
             // get our data
             const res = await fetch(
-              `https://opentdb.com/api.php?amount=${query.amount}&category=${query.category}&difficlty=${query.difficulty}&type=multiple`,
+              `https://opentdb.com/api.php?day=2&amount=${query.amount}&category=${query.category}&difficlty=${query.difficulty}&type=multiple`,
               // Connect abort conroller
               { signal: controller.signal }
             );
@@ -42,35 +43,35 @@ export function useTrivia(query, start) {
             if (data.response === "False")
               throw new Error("Questions  Not Found");
             // set our state
-            setQuestionData((questions) =>
+            setQuestions((questions) =>
               data.results.map((question) => {
                 return {
                   question: question.question,
-                  answers: shuffleARR(
+                  options: shuffleARR(
                     question.incorrect_answers,
                     question.correct_answer
                   ),
-                  correct: question.correct_answer,
+                  correctOption: question.correct_answer,
                   points: 10,
                 };
               })
             );
 
             // set error to empty initially (cos no error)
-            setError("");
           } catch (err) {
             // display error / exclude abort error
             if (err.name !== "AbortError") {
               setError(err.message);
             }
           } finally {
-            // log the data search for questionData
+            // log the data search for questions
             setIsLoading(false);
+            setStatus("ready");
           }
         }
       }
 
-      // fetch our questionData
+      // fetch our questions
       fetchQuestions();
       // return controller here
       return function () {
@@ -81,5 +82,5 @@ export function useTrivia(query, start) {
     [query]
   );
   // now we return these state pieces
-  return { questionData, isLoading, error };
+  return { questions, isLoading, error };
 }

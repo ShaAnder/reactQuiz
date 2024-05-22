@@ -50,6 +50,7 @@ body {
   align-self: center;
   justify-content: center;
   margin: auto;
+  margin-bottom: 5%;
 }
 
 .error {
@@ -120,16 +121,26 @@ progress {
 }
 
 .btn {
-  display: block;
+  display: float;
   font-family: inherit;
   color: inherit;
-  font-size: 2rem;
+  font-size: 4rem;
   border: 2px solid var(--color-dark);
   background-color: var(--color-dark);
   padding: 1.2rem 2.4rem;
   cursor: pointer;
   border-radius: 100px;
   transition: 0.3s;
+}
+
+.number-btn {
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.confirm-btn {
+  width: 10em;
+  height: 3em;
 }
 
 .btn:not([disabled]):hover {
@@ -282,17 +293,4 @@ progress {
 
 .select ::-webkit-scrollbar {
   width: 0;
-}
-
-.start-quiz-button {
-  width: 40%;
-  height: 40%;
-  font-size: 30px;
-  margin: auto;
-  margin-top: 25%;
-  display: block;
-  text-align: center;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
 }

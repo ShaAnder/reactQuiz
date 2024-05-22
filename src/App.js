@@ -1,48 +1,63 @@
 import { useState } from "react";
 
+import Loader from "./assets/js/components/helpers/Loader";
+import Error from "./assets/js/components/helpers/Error";
+
+// HOOKS
 import useQuestionData from "./assets/js/components/hooks/useQuestionData";
 import { useTrivia } from "./assets/js/components/hooks/useTrivia";
 
+//COMPONENTS
 import { GetQuestionData } from "./assets/js/components/data/GetQuestionData";
-
 import { Main } from "./assets/js/components/views/Main";
 import { Header } from "./assets/js/components/views/Header";
+import { StartGame } from "./assets/js/components/views/StartGame";
+import { Question } from "./assets/js/components/views/Question";
 
+// APP
 export default function App() {
   // Start Game State
   const [start, setStart] = useState(false);
+  // params state for sending it to trivia all in one go (otherwise it tries to make an api call every state update)
   const [params, setParams] = useState([]);
-  // destucture reducer hook here
-  const { reducerState, actions } = useQuestionData();
+  //test status state
+  const [status, setStatus] = useState("loading");
+
+  // destucture reducerQuestion hook here
+  const { reducerQuestionState, questionActions } = useQuestionData();
   // destructure trivia hook here
-  const { questionData, isLoading, error } = useTrivia(params, start);
+  const { questions, isLoading, error } = useTrivia(params, start, setStatus);
 
   // set start handler
   function handleSetStart() {
     setStart(!start);
-    setParams(reducerState);
+    setParams(reducerQuestionState);
+    if (error !== "") {
+      setStatus("error");
+    } else {
+      setStatus("ready");
+    }
   }
-
-  let question = {
-    correct: "Blonde",
-    incorrect: ["Brunette", "Black", "Burgundy"],
-    points: 10,
-    question:
-      "What was the name of singer Frank Ocean&#039;s second studio album, which was released on August 20, 2016?",
-  };
 
   return (
     <div>
       <Header />
       {!start ? (
         <GetQuestionData
-          actions={actions}
+          questionActions={questionActions}
           setStart={setStart}
           start={start}
           handleSetStart={handleSetStart}
         />
       ) : (
-        <Main questionData={questionData} />
+        <Main>
+          {status === "loading" && <Loader />}
+          {status === "ready" && (
+            <StartGame info={reducerQuestionState} setStatus={setStatus} />
+          )}
+          {status === "error" && <Error />}
+          {status === "active" && <Question />}
+        </Main>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 
-const initialreducerState = {
+const initialQuestionState = {
   amount: "10",
   category: "",
   difficulty: "",
@@ -8,24 +8,27 @@ const initialreducerState = {
 };
 
 // Reducer get's defined outside of our component, then we pass it into the component
-function reducer(reducerState = {}, action) {
-  switch (action.type) {
+function reducer(reducerQuestionState = {}, questionAction) {
+  switch (questionAction.type) {
     case "setAmount":
-      return { ...reducerState, amount: action.payload };
+      return { ...reducerQuestionState, amount: questionAction.payload };
     case "setCategory":
-      return { ...reducerState, category: action.payload };
+      return { ...reducerQuestionState, category: questionAction.payload };
     case "setDifficulty":
-      return { ...reducerState, difficulty: action.payload };
+      return { ...reducerQuestionState, difficulty: questionAction.payload };
 
     default:
-      throw new Error("Unknown action");
+      throw new Error("Unknown Action");
   }
 }
 
 export default function useQuestionData() {
-  // Custom reducer hook, going to keep all our logic here, then pass it into our reducerState / components later
+  // Custom reducer hook, going to keep all our logic here, then pass it into our reducerQuestionState / components later
 
-  const [reducerState, dispatch] = useReducer(reducer, initialreducerState);
+  const [reducerQuestionState, dispatch] = useReducer(
+    reducer,
+    initialQuestionState
+  );
 
   const defineAmount = function (e) {
     dispatch({ type: "setAmount", payload: Number(e.target.value) });
@@ -40,13 +43,13 @@ export default function useQuestionData() {
     dispatch({ type: "setDifficulty", payload: e.value });
   };
 
-  // Package our actions / reducerState into an object, so we can pass it on later
-  const actions = {
+  // Package our questionActions / reducerQuestionState into an object, so we can pass it on later
+  const questionActions = {
     defineAmount,
     defineCategory,
     defineDifficulty,
   };
 
-  // return reducerState / actions for our components
-  return { reducerState, actions };
+  // return reducerQuestionState / questionActions for our components
+  return { reducerQuestionState, questionActions };
 }
