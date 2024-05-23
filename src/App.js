@@ -13,6 +13,7 @@ import { Main } from "./assets/js/components/views/Main";
 import { Header } from "./assets/js/components/views/Header";
 import { StartGame } from "./assets/js/components/views/StartGame";
 import { Question } from "./assets/js/components/views/question_model/Question";
+import useAnswerData from "./assets/js/components/hooks/useAnswerData";
 
 // APP
 export default function App() {
@@ -22,13 +23,12 @@ export default function App() {
   const [params, setParams] = useState([]);
   //test status state
   const [status, setStatus] = useState("loading");
-  // set our question index
-  const [index, setIndex] = useState(0);
-
   // destucture reducerQuestion hook here
   const { reducerQuestionState, questionActions } = useQuestionData();
   // destructure trivia hook here
   const { questions, isLoading, error } = useTrivia(params, start, setStatus);
+  // destrucuture answer hook here
+  const [{ answer, index }, answerActions] = useAnswerData();
 
   // set start handler
   function handleSetStart() {
@@ -58,7 +58,9 @@ export default function App() {
             <StartGame info={reducerQuestionState} setStatus={setStatus} />
           )}
           {status === "error" && <Error />}
-          {status === "active" && <Question question={questions[index]} />}
+          {status === "active" && (
+            <Question question={questions[index]} answer={answer} />
+          )}
         </Main>
       )}
     </div>
