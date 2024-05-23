@@ -27,7 +27,10 @@ body {
   color: var(--color-light);
   background-color: var(--color-darkest);
   padding: 3.2rem;
-  overflow: hidden;
+  ::-webkit-scrollbar {
+    display: none;
+    scroll-behavior: smooth;
+  }
 }
 
 .app {
@@ -283,6 +286,10 @@ progress {
 
 .quiz-buttons {
   font-size: 30px;
+}
+
+.select {
+  width: 70vh;
 }
 
 .select .cat-header {

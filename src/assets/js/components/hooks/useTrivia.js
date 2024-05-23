@@ -43,6 +43,7 @@ export function useTrivia(query, start, setStatus) {
             if (data.response === "False")
               throw new Error("Questions  Not Found");
             // set our state
+
             setQuestions((questions) =>
               data.results.map((question) => {
                 return {

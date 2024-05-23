@@ -12,7 +12,7 @@ import { GetQuestionData } from "./assets/js/components/data/GetQuestionData";
 import { Main } from "./assets/js/components/views/Main";
 import { Header } from "./assets/js/components/views/Header";
 import { StartGame } from "./assets/js/components/views/StartGame";
-import { Question } from "./assets/js/components/views/Question";
+import { Question } from "./assets/js/components/views/question_model/Question";
 
 // APP
 export default function App() {
@@ -22,6 +22,8 @@ export default function App() {
   const [params, setParams] = useState([]);
   //test status state
   const [status, setStatus] = useState("loading");
+  // set our question index
+  const [index, setIndex] = useState(0);
 
   // destucture reducerQuestion hook here
   const { reducerQuestionState, questionActions } = useQuestionData();
@@ -40,7 +42,7 @@ export default function App() {
   }
 
   return (
-    <div>
+    <div className="app">
       <Header />
       {!start ? (
         <GetQuestionData
@@ -56,7 +58,7 @@ export default function App() {
             <StartGame info={reducerQuestionState} setStatus={setStatus} />
           )}
           {status === "error" && <Error />}
-          {status === "active" && <Question />}
+          {status === "active" && <Question question={questions[index]} />}
         </Main>
       )}
     </div>
@@ -87,3 +89,8 @@ export default function App() {
 // assigning point value to questions
 
 // leaderboard (based on category?)
+
+//TOFIX
+
+// Status / index to go into a reducer
+// Encoding on questions
