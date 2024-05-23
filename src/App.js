@@ -53,11 +53,11 @@ export default function App() {
         />
       ) : (
         <Main>
-          {status === "loading" && <Loader />}
+          {status === "loading" && <Loader>Loading Questions...</Loader>}
           {status === "ready" && (
             <StartGame info={reducerQuestionState} setStatus={setStatus} />
           )}
-          {status === "error" && <Error />}
+          {status === "error" && <Error>{error}</Error>}
           {status === "active" && (
             <Question question={questions[index]} answer={answer} />
           )}
