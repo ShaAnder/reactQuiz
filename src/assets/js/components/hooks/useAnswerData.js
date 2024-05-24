@@ -3,22 +3,24 @@ import { useReducer } from "react";
 const initialAnswerState = {
   answer: null,
   index: 0,
+  points: 0,
 };
 
 // Reducer get's defined outside of our component, then we pass it into the component
-function reducer(reducerAnswerState, answerAction) {
+function reducer(reducerAnswerState = {}, answerAction) {
   switch (answerAction.type) {
     case "setAnswer":
-      return { ...reducerAnswerState, category: answerAction.payload };
+      // get current question for updating points
+      return { ...reducerAnswerState, answer: answerAction.payload };
     case "setIndex":
-      return { ...reducerAnswerState, difficulty: answerAction.payload };
+      return { ...reducerAnswerState, index: answerAction.payload };
 
     default:
       throw new Error("Unknown Action");
   }
 }
 
-export default function useAnswerData() {
+export function useAnswerData() {
   // Custom reducer hook, going to keep all our logic here, then pass it into our reducerAnswerState / components later
 
   const [reducerAnswerState, dispatch] = useReducer(
@@ -28,11 +30,11 @@ export default function useAnswerData() {
 
   const defineAnswer = function (e) {
     // console.log(e);
-    dispatch({ type: "setAnswer", payload: e.value });
+    dispatch({ type: "setAnswer", payload: e });
   };
 
   const defineIndex = function (e) {
-    dispatch({ type: "setIndex", payload: e.value });
+    dispatch({ type: "setIndex", payload: e });
   };
 
   // Package our answerActions / reducerAnswerState into an object, so we can pass it on later

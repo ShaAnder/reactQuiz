@@ -6,6 +6,7 @@ import Error from "./assets/js/components/helpers/Error";
 // HOOKS
 import useQuestionData from "./assets/js/components/hooks/useQuestionData";
 import { useTrivia } from "./assets/js/components/hooks/useTrivia";
+import { useAnswerData } from "./assets/js/components/hooks/useAnswerData";
 
 //COMPONENTS
 import { GetQuestionData } from "./assets/js/components/data/GetQuestionData";
@@ -13,7 +14,6 @@ import { Main } from "./assets/js/components/views/Main";
 import { Header } from "./assets/js/components/views/Header";
 import { StartGame } from "./assets/js/components/views/StartGame";
 import { Question } from "./assets/js/components/views/question_model/Question";
-import useAnswerData from "./assets/js/components/hooks/useAnswerData";
 
 // APP
 export default function App() {
@@ -59,8 +59,13 @@ export default function App() {
           )}
           {status === "error" && <Error>{error}</Error>}
           {status === "active" && (
-            <Question question={questions[index]} answer={answer} />
+            <Question
+              question={questions[index]}
+              answer={answer}
+              answerActions={answerActions}
+            />
           )}
+          <p>{console.log(answer)}</p>
         </Main>
       )}
     </div>
